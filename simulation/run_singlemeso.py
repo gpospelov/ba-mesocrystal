@@ -118,6 +118,9 @@ def create_detector():
 
 
 def create_mesocrystal_layout(particle_material, average_layer_thickness):
+    """
+    Createss layout with mesocrystal collection.
+    """
     m_meso_elevation = 50*nm
     m_surface_density = 1e-7
 
@@ -139,7 +142,38 @@ def create_mesocrystal_layout(particle_material, average_layer_thickness):
     pass
 
 
+def create_diffuse_layout(particle_material, average_layer_thickness):
+    """
+    Createss layout with mesocrystal collection.
+    """
+
+    m_radius = 5.02
+    m_nparticles = 100
+    m_sigma = 0.5
+    m_diffuse_surface_density = 1e-2
+
+    layout = ba.ParticleLayout()
+
+    distr = ba.DistributionGaussian(m_radius, m_sigma)
+    # scale_param = math.sqrt(math.log((m_sigma / m_radius) ** 2 + 1.0))
+    # distr = ba.DistributionLogNormal(m_radius, scale_param)
+    particle = ba.Particle(particle_material, ba.FormFactorFullSphere(m_radius))
+
+    sigma_factor = 3.0
+    par_distr = ba.ParameterDistribution(
+        "/Particle/FullSphere/Radius", distr, m_nparticles, sigma_factor)
+    part_coll = ba.ParticleDistribution(particle, par_distr)
+    layout.addParticle(part_coll, 1.0, ba.kvector_t(0, 0, -average_layer_thickness+10))
+
+    layout.setTotalParticleSurfaceDensity(m_diffuse_surface_density)
+
+    return layout
+
+
 def create_sample(wavelength):
+    """
+    Creates multilayer.
+    """
     m_air_material = get_air(wavelength)
     m_substrate_material = get_si(wavelength)
     m_particle_material = get_iron_oxide(wavelength)
@@ -150,8 +184,11 @@ def create_sample(wavelength):
 
     air_layer = ba.Layer(m_air_material)
     avg_layer = ba.Layer(m_air_material, m_average_layer_thickness)
-    layout = create_mesocrystal_layout(m_particle_material, m_average_layer_thickness)
-    avg_layer.addLayout(layout)
+    meso_layout = create_mesocrystal_layout(m_particle_material, m_average_layer_thickness)
+    avg_layer.addLayout(meso_layout)
+    diffuse_layout = create_diffuse_layout(m_particle_material, m_average_layer_thickness)
+    avg_layer.addLayout(diffuse_layout)
+
     substrate_layer = ba.Layer(m_substrate_material)
     roughness = ba.LayerRoughness(m_roughness, 0.3, 500.0 * nm)
 
@@ -180,7 +217,7 @@ def create_simulation():
     simulation.setRegionOfInterest(30.0, 21.0, 65.0, 58.0)
     simulation.getOptions().setUseAvgMaterials(True)
     simulation.setBackground(ba.ConstantBackground(m_constant_background))
-    simulation.setDetectorResolutionFunction(ba.ResolutionFunction2DGaussian(m_pixel_size, m_pixel_size))
+    simulation.setDetectorResolutionFunction(ba.ResolutionFunction2DGaussian(m_pixel_size*1.5, m_pixel_size*2.0))
     simulation.setSample(create_sample(m_beam_wavelength))
     return simulation
 
@@ -188,10 +225,10 @@ def create_simulation():
 def run_simulation():
     simulation = create_simulation()
     simulation.runSimulation()
-    print("Completed successfully")
     return simulation.result()
 
 
 if __name__ == '__main__':
     result = run_simulation()
-    ba.plot_simulation_result(result, zmin=1e+04, zmax=1e+08, cmap='jet', aspect='auto')
+    print("Completed successfully")
+    ba.plot_simulation_result(result, intensity_min=1e+04, intensity_max=1e+08, cmap='jet', aspect='auto')
