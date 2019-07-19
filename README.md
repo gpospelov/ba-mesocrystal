@@ -1,0 +1,3 @@
+# ba-mesocrystal
+
+Mesocrystal simulation
