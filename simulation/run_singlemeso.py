@@ -5,6 +5,7 @@ import bornagain as ba
 from bornagain import deg, nm, angstrom
 import math
 import periodictable as pt
+import numpy as np
 
 m_pixel_size = 4 * 41.74e-3  # mm
 
@@ -19,11 +20,11 @@ class MesoCrystalBuilder:
         self.m_nparticles = 10
         self.m_nanoparticle_radius = 5.02*nm
         self.m_sigma_nanoparticle_radius = 0.3*nm
-        self.m_meso_height = 200*nm
-        self.m_meso_radius = 1000*nm
-        self.m_sigma_lattice_length_a = 0.1*nm
+        self.m_meso_height = 300*nm
+        self.m_meso_radius = 500*nm
+        self.m_sigma_lattice_length_a = 0.3*nm
         self.m_sigma_meso_height = 20*nm
-        self.m_sigma_meso_radius = 20*nm
+        self.m_sigma_meso_radius = 80*nm
         self.m_rotation_x = 0.0
         self.m_rotation_z = 0.0
         self.particle_material = particle_material
@@ -116,14 +117,23 @@ def create_detector():
     return detector
 
 
-def create_layout(particle_material, average_layer_thickness):
+def create_mesocrystal_layout(particle_material, average_layer_thickness):
+    m_meso_elevation = 50*nm
+    m_surface_density = 1e-7
+
     layout = ba.ParticleLayout()
 
-    builder = MesoCrystalBuilder(particle_material)
-    meso = builder.create_meso()
-    meso_elevation = 50*nm
-    layout.addParticle(meso, 1.0, ba.kvector_t(0, 0, -average_layer_thickness + meso_elevation))
-    layout.setTotalParticleSurfaceDensity(1e-7)
+    # generating rotated mesocrystals
+    mesocrystals = list()
+    for phi in np.linspace(-5.0, 65.0, 141):
+        builder = MesoCrystalBuilder(particle_material)
+        builder.m_rotation_z = phi
+        mesocrystals.append(builder.create_meso())
+
+    for meso in mesocrystals:
+        layout.addParticle(meso, 1.0, ba.kvector_t(0, 0, -average_layer_thickness + m_meso_elevation))
+
+    layout.setTotalParticleSurfaceDensity(m_surface_density)
 
     return layout
     pass
@@ -133,16 +143,17 @@ def create_sample(wavelength):
     m_air_material = get_air(wavelength)
     m_substrate_material = get_si(wavelength)
     m_particle_material = get_iron_oxide(wavelength)
+    m_average_layer_thickness = 1000*nm
+    m_roughness = 1.0*nm
 
     multi_layer = ba.MultiLayer()
 
     air_layer = ba.Layer(m_air_material)
-    m_average_layer_thickness=1000
-    avg_layer = ba.Layer(m_air_material, 1000*nm)
-    layout = create_layout(m_particle_material, m_average_layer_thickness)
+    avg_layer = ba.Layer(m_air_material, m_average_layer_thickness)
+    layout = create_mesocrystal_layout(m_particle_material, m_average_layer_thickness)
     avg_layer.addLayout(layout)
     substrate_layer = ba.Layer(m_substrate_material)
-    roughness = ba.LayerRoughness(10.0, 0.3, 500.0 * nm)
+    roughness = ba.LayerRoughness(m_roughness, 0.3, 500.0 * nm)
 
     multi_layer.addLayer(air_layer)
     multi_layer.addLayer(avg_layer)
@@ -158,7 +169,9 @@ def create_simulation():
     m_inclination_angle = 0.4 * deg
     m_beam_wavelength = 0.177 * nm
     m_beam_intensity = 6.1e+12
+    m_constant_background = 200.0
 
+    print("Starting")
     simulation = ba.GISASSimulation()
     simulation.setTerminalProgressMonitor()
     simulation.setDetector(create_detector())
@@ -166,7 +179,7 @@ def create_simulation():
     simulation.setBeamIntensity(m_beam_intensity)
     simulation.setRegionOfInterest(30.0, 21.0, 65.0, 58.0)
     simulation.getOptions().setUseAvgMaterials(True)
-    simulation.setBackground(ba.ConstantBackground(200.0))
+    simulation.setBackground(ba.ConstantBackground(m_constant_background))
     simulation.setDetectorResolutionFunction(ba.ResolutionFunction2DGaussian(m_pixel_size, m_pixel_size))
     simulation.setSample(create_sample(m_beam_wavelength))
     return simulation
@@ -175,9 +188,10 @@ def create_simulation():
 def run_simulation():
     simulation = create_simulation()
     simulation.runSimulation()
+    print("Completed successfully")
     return simulation.result()
 
 
 if __name__ == '__main__':
     result = run_simulation()
-    ba.plot_simulation_result(result, cmap='jet', aspect='auto')
+    ba.plot_simulation_result(result, zmin=1e+04, zmax=1e+08, cmap='jet', aspect='auto')
