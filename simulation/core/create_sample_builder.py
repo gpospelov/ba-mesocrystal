@@ -3,6 +3,7 @@ Create function to build various sample builders.
 """
 from .sample_builder_ver1 import SampleBuilderVer1
 from .sample_builder_ver2 import SampleBuilderVer2
+from .sample_builder_ver3 import SampleBuilderVer3
 
 
 def create_sample_builder(config):
