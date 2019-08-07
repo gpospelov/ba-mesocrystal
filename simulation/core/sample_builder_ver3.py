@@ -16,9 +16,7 @@ class SampleBuilderVer3:
     """
     def __init__(self, config):
         self.m_roughness = config["roughness"]
-        self.m_surface_filling_ratio = config["surface_filling_ratio"]
         self.m_average_layer_thickness = config["average_layer_thickness"]
-        self.m_meso_elevation = config["meso_elevation"]
 
         self.m_air_material = None
         self.m_substrate_material = None
@@ -64,14 +62,11 @@ class SampleBuilderVer3:
 
         multi_layer = ba.MultiLayer()
         air_layer = ba.Layer(self.m_air_material)
-
-        avg_layer = ba.Layer(self.m_air_material,
-                             self.m_average_layer_thickness)
+        avg_layer = ba.Layer(self.m_air_material, self.m_average_layer_thickness)
+        substrate_layer = ba.Layer(self.m_substrate_material)
 
         for layout_factory in self.m_layouts:
             avg_layer.addLayout(layout_factory.create_layout(self.m_particle_material))
-
-        substrate_layer = ba.Layer(self.m_substrate_material)
 
         roughness = ba.LayerRoughness(self.m_roughness, 0.3, 500.0*nm)
         multi_layer.addLayer(air_layer)

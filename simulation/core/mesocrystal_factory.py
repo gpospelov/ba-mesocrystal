@@ -49,12 +49,12 @@ class RotatedMesoFactory(MesoCrystalFactory):
     """
     def __init__(self, config=None):
         super().__init__(config)
-        self.m_phi_start = config["phi_start"]
-        self.m_phi_stop = config["phi_stop"]
-        self.m_phi_rotation_steps = config["phi_steps"]
-        self.m_tilt_start = config["tilt_start"]
-        self.m_tilt_stop = config["tilt_stop"]
-        self.m_tilt_steps = config["tilt_steps"]
+        self.m_phi_start = config["RotatedMesoFactory"]["phi_start"]
+        self.m_phi_stop = config["RotatedMesoFactory"]["phi_stop"]
+        self.m_phi_rotation_steps = config["RotatedMesoFactory"]["phi_steps"]
+        self.m_tilt_start = config["RotatedMesoFactory"]["tilt_start"]
+        self.m_tilt_stop = config["RotatedMesoFactory"]["tilt_stop"]
+        self.m_tilt_steps = config["RotatedMesoFactory"]["tilt_steps"]
         self.m_meso_radius = config["meso_radius"]
         self.m_total_meso_area = 0.0
         self.m_meso_count = 0
