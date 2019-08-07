@@ -22,7 +22,7 @@ class MesoCrystalBuilder:
         self.m_sigma_nanoparticle_radius = 0.3*nm
         self.m_meso_height = 300*nm
         self.m_meso_radius = 500*nm
-        self.m_sigma_lattice_length_a = 0.3*nm
+        self.particle_pos_sigma = 0.3*nm
         self.m_rotation_x = 0.0
         self.m_rotation_z = 0.0
         self.particle_material = particle_material
@@ -62,7 +62,7 @@ class MesoCrystalBuilder:
                                   self.m_nparticles)
 
         npc = ba.Crystal(basis, lattice)
-        dw_factor = self.m_sigma_lattice_length_a*self.m_sigma_lattice_length_a
+        dw_factor = self.particle_pos_sigma*self.particle_pos_sigma
         npc.setPositionVariance(dw_factor)
         result = ba.MesoCrystal(npc, ff_meso)
 

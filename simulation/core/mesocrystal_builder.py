@@ -21,7 +21,7 @@ class MesoCrystalBuilder:
         self.m_sigma_nanoparticle_radius = config["sigma_nanoparticle_radius"]
         self.m_meso_height = config["meso_height"]
         self.m_meso_radius = config["meso_radius"]
-        self.m_sigma_lattice_length_a = config["sigma_lattice_length_a"]
+        self.particle_pos_sigma = config["particle_pos_sigma"]
         self.m_rotation_x = config["rotation_x"]
         self.m_rotation_z = config["rotation_z"]
         pass
@@ -62,7 +62,7 @@ class MesoCrystalBuilder:
         ff_meso = self.create_outer_formfactor()
 
         npc = ba.Crystal(basis, lattice)
-        npc.setPositionVariance(self.m_sigma_lattice_length_a*self.m_sigma_lattice_length_a)
+        npc.setPositionVariance(self.particle_pos_sigma*self.particle_pos_sigma)
         result = ba.MesoCrystal(npc, ff_meso)
 
         if self.m_rotation_z != 0.0:
