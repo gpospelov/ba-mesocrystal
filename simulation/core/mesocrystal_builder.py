@@ -4,7 +4,7 @@ Build single MesoCrystal for given MesoParameters.
 import math
 import bornagain as ba
 from bornagain import nm, deg
-import random
+import numpy as np
 
 
 class MesoCrystalBuilder:
@@ -51,6 +51,9 @@ class MesoCrystalBuilder:
         basis = ba.ParticleComposition()
         basis.addParticles(particle, pos_vector)
         return basis
+
+    def meso_area(self):
+        return np.pi * self.m_meso_radius * self.m_meso_radius
 
     def create_meso(self):
 

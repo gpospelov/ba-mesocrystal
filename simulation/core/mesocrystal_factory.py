@@ -55,7 +55,6 @@ class RotatedMesoFactory(MesoCrystalFactory):
         self.m_tilt_start = config["RotatedMesoFactory"]["tilt_start"]
         self.m_tilt_stop = config["RotatedMesoFactory"]["tilt_stop"]
         self.m_tilt_steps = config["RotatedMesoFactory"]["tilt_steps"]
-        self.m_meso_radius = config["meso_radius"]
         self.m_total_meso_area = 0.0
         self.m_meso_count = 0
 
@@ -77,7 +76,7 @@ class RotatedMesoFactory(MesoCrystalFactory):
                 meso_builder = create_mesocrystal_builder(cfg, material)
 
                 mesocrystal = meso_builder.create_meso()
-                self.m_total_meso_area += np.pi * self.m_meso_radius * self.m_meso_radius
+                self.m_total_meso_area += meso_builder.meso_area()
                 result.append((mesocrystal, 1.0))
 
         return result
