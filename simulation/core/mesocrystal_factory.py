@@ -1,6 +1,7 @@
 """
 Builds collection of mesocrystals
 """
+import abc
 import bornagain as ba
 from core.create_mesocrystal_builder import create_mesocrystal_builder
 from .layout_factory_base import LayoutFactory
@@ -22,13 +23,13 @@ class MesoCrystalFactory(LayoutFactory):
         self.m_meso_elevation = config["meso_elevation"]
         pass
 
+    @abc.abstractmethod
     def surface_density(self):
-        filling_ratio = self.m_config["surface_filling_ratio"]
-        radius = self.m_config["meso_radius"]
-        return filling_ratio/np.pi/radius/radius
+        return None
 
+    @abc.abstractmethod
     def build_mesocrystals(self, particle_material):
-        return list()
+        return None
 
     def create_layout(self, particle_material):
         layout = ba.ParticleLayout()
