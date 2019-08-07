@@ -103,7 +103,6 @@ class FuzzyCylinder(MesoCrystalBuilder):
     def create_particle(self, material):
         scale_param = math.sqrt(math.log((self.m_sigma_nanoparticle_radius/self.m_nanoparticle_radius)**2 + 1.0))
         particle = ba.Particle(material, ba.FormFactorSphereLogNormalRadius(self.m_nanoparticle_radius, scale_param, self.m_nparticles))
-        # particle = ba.Particle(material, ba.FormFactorFullSphere(np_radius))
         return particle
 
     def create_outer_formfactor(self):
