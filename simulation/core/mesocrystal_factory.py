@@ -55,8 +55,9 @@ class RotatedMesoFactory(MesoCrystalFactory):
         self.m_tilt_start = config["RotatedMesoFactory"]["tilt_start"]
         self.m_tilt_stop = config["RotatedMesoFactory"]["tilt_stop"]
         self.m_tilt_steps = config["RotatedMesoFactory"]["tilt_steps"]
-        self.m_total_meso_area = 0.0
-        self.m_meso_count = 0
+        self.m_layout_weight = config["RotatedMesoFactory"]["layout_weight"]
+        self.m_filling_ratio = config["RotatedMesoFactory"]["surface_filling_ratio"]
+        self.m_average_meso_area = 0.0
 
     def build_mesocrystals(self, material=None):
         result = []
@@ -64,10 +65,10 @@ class RotatedMesoFactory(MesoCrystalFactory):
         dphi = (self.m_phi_stop - self.m_phi_start)/self.m_phi_rotation_steps
         dtilt = (self.m_tilt_stop - self.m_tilt_start)/self.m_tilt_steps
 
+        total_meso_area = 0.0
         for i_tilt in range(0, int(self.m_tilt_steps)):
             tilt = self.m_tilt_start + i_tilt * dtilt
             for i_phi in range(0, int(self.m_phi_rotation_steps)):
-                self.m_meso_count+= 1
                 phi = self.m_phi_start + i_phi*dphi
 
                 cfg = copy.deepcopy(self.m_config)
@@ -76,16 +77,15 @@ class RotatedMesoFactory(MesoCrystalFactory):
                 meso_builder = create_mesocrystal_builder(cfg, material)
 
                 mesocrystal = meso_builder.create_meso()
-                self.m_total_meso_area += meso_builder.meso_area()
+                total_meso_area += meso_builder.meso_area()
                 result.append((mesocrystal, 1.0))
+
+        self.m_average_meso_area = total_meso_area/len(result)
 
         return result
 
     def surface_density(self):
-        area = self.m_total_meso_area/self.m_config["surface_filling_ratio"]
-        return 5e-02*self.m_meso_count/area
-        # filling_ratio = self.m_config["surface_filling_ratio"]
-        # return 5e-02*filling_ratio / (self.m_total_meso_area/self.m_meso_count)
+        return self.m_layout_weight*self.m_filling_ratio/self.m_average_meso_area
 
 
 class SingleMesoFactory(MesoCrystalFactory):
