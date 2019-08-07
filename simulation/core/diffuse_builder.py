@@ -3,22 +3,11 @@ Collection of builders to generate particle layouts generating diffuse scatterin
 """
 import bornagain as ba
 from .meso_utils import random_gate
+from .layout_factory_base import LayoutFactory
 import numpy.random as npr
 
 
-class DiffuseBuilder:
-    """
-    Base class to generate particle layouts for diffuse scattering.
-    """
-    def __init__(self, config=None):
-        self.m_config = config
-        pass
-
-    def create_layout(self, particle_material):
-        return None
-
-
-class RandomSizeParticles(DiffuseBuilder):
+class RandomSizeParticles(LayoutFactory):
     """
     Creates particle layout with
     """

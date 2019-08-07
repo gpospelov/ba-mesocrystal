@@ -7,6 +7,7 @@ import bornagain as ba
 from bornagain import nm, angstrom
 from .create_mesocrystal_factory import create_mesocrystal_factory
 from .create_diffuse_builder import create_diffuse_builder
+from .create_layout_factory import create_layout_factory
 from periodictable.xsf import xray_energy, xray_sld_from_atoms, xray_sld
 from periodictable.xsf import index_of_refraction, mirror_reflectivity
 import periodictable as pt
@@ -28,6 +29,10 @@ class SampleBuilderVer3:
 
         self.m_diffuse_builder = create_diffuse_builder(config)
         self.m_meso_factory = create_mesocrystal_factory(config)
+        self.m_layouts = list()
+
+        for layout_name in config["layouts"]:
+            self.m_layouts.append(create_layout_factory(layout_name, config))
 
     def get_air(self, wavelength):
         return ba.MaterialBySLD("air", 0.0, 0.0)
@@ -72,9 +77,6 @@ class SampleBuilderVer3:
 
         return layout
 
-    def create_diffuse_layout(self):
-        return self.m_diffuse_builder.create_layout(self.m_particle_material) if self.m_diffuse_builder else None
-
     def build_sample(self, wavelength=None):
         """
         Constructs multilayer with collection of mesocrystals.
@@ -90,9 +92,9 @@ class SampleBuilderVer3:
         layout = self.create_layout()
 
         avg_layer.addLayout(layout)
-        diffuse_layout = self.create_diffuse_layout()
-        if diffuse_layout:
-            avg_layer.addLayout(diffuse_layout)
+
+        for layout_factory in self.m_layouts:
+            avg_layer.addLayout(layout_factory.create_layout(self.m_particle_material))
 
         substrate_layer = ba.Layer(self.m_substrate_material)
 

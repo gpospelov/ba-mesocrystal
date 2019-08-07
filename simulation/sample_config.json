@@ -90,7 +90,7 @@
   },
   "twomeso" : {
     "sample_builder_type": "SampleBuilderVer3",
-    "layouts" : [],
+    "layouts" : ["RandomSizeParticles"],
     "roughness": 5.0,
     "surface_filling_ratio": 0.12,
     "average_layer_thickness": 900,
@@ -98,7 +98,6 @@
     "meso_factory_type": "MixtureMesoFactory",
     "meso_count" :600,
     "tilt_span" : 0.5,
-    "diffuse_builder_type" : "None",
     "meso_builder_type": "FixedCylinder",
     "lattice_length_a": 12.5,
     "lattice_length_c": 31.1,
