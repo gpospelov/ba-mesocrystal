@@ -27,7 +27,6 @@ class SampleBuilderVer3:
         self.m_substrate_material = None
         self.m_particle_material = None
 
-        self.m_diffuse_builder = create_diffuse_builder(config)
         self.m_meso_factory = create_mesocrystal_factory(config)
         self.m_layouts = list()
 

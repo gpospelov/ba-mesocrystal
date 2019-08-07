@@ -1,7 +1,9 @@
 """
 Builds collection of mesocrystals
 """
+import bornagain as ba
 from core.create_mesocrystal_builder import create_mesocrystal_builder
+from .layout_factory_base import LayoutFactory
 import copy
 import numpy as np
 import numpy.random as npr
@@ -9,19 +11,35 @@ import random
 import math
 
 
-class MesoCrystalFactory:
+class MesoCrystalFactory(LayoutFactory):
     """
     Base class to generate collection of mesocrystals according to some arrangement.
     External MesoCrystalBuilder is used to generate single mesocrystal.
     """
     def __init__(self, config=None):
-        self.m_config = config
+        super().__init__(config)
+        self.m_average_layer_thickness = config["average_layer_thickness"]
+        self.m_meso_elevation = config["meso_elevation"]
         pass
 
     def surface_density(self):
         filling_ratio = self.m_config["surface_filling_ratio"]
         radius = self.m_config["meso_radius"]
         return filling_ratio/np.pi/radius/radius
+
+    def build_mesocrystals(self, particle_material):
+        return list()
+
+    def create_layout(self, particle_material):
+        layout = ba.ParticleLayout()
+
+        mesocrystals = self.build_mesocrystals(particle_material)
+        for meso, weight in mesocrystals:
+            layout.addParticle(meso, weight, ba.kvector_t(0, 0, -self.m_average_layer_thickness+self.m_meso_elevation))
+
+        layout.setTotalParticleSurfaceDensity(self.surface_density())
+
+        return layout
 
 
 class RotatedMesoFactory(MesoCrystalFactory):
