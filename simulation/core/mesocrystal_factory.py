@@ -121,6 +121,7 @@ class RandomMesoFactory(MesoCrystalFactory):
         self.m_meso_count = config["RandomMesoFactory"]["meso_count"]
         self.m_layout_weight = config["RandomMesoFactory"]["layout_weight"]
         self.m_filling_ratio = config["RandomMesoFactory"]["surface_filling_ratio"]
+        self.m_tilt_dtheta = config["RandomMesoFactory"]["tilt_dtheta"]
         self.m_phi_values = [0.0, 17.5, 29.0, 39.0, 58.5]
 
     def generate_phi(self):
@@ -128,7 +129,7 @@ class RandomMesoFactory(MesoCrystalFactory):
         return value
 
     def generate_tilt(self):
-        return random_gate(-0.2, 0.2)
+        return random_gate(-self.m_tilt_dtheta, self.m_tilt_dtheta)
 
     def build_mesocrystals(self, material):
         result = list()
