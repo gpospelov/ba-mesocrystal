@@ -5,6 +5,7 @@ import abc
 import bornagain as ba
 from core.create_mesocrystal_builder import create_mesocrystal_builder
 from .layout_factory_base import LayoutFactory
+from .meso_utils import random_gate
 import copy
 import numpy as np
 import numpy.random as npr
@@ -125,9 +126,6 @@ class RandomMesoFactory(MesoCrystalFactory):
         self.m_lattice_length_c = config["lattice_length_c"]
         self.m_total_meso_area = 0.0
 
-    def gate(self, a, b):
-        return a + (b-a)*npr.random()
-
     def generate_phi(self):
         value = random.choice(self.m_phi_values)+self.gate(-5.0, 5.0)
         return value
@@ -136,19 +134,19 @@ class RandomMesoFactory(MesoCrystalFactory):
         return npr.normal(self.m_nanoparticle_radius, self.m_sigma_nanoparticle_radius)
 
     def generate_tilt(self):
-        return self.gate(-0.2, 0.2)
+        return random_gate(-0.2, 0.2)
 
     def generate_meso_radius(self):
         # sizes = [50.0, 100.0, 1000.0, 1200.0]
         # return random.choice(sizes)
         # return self.gate(100, 1200)
-        return self.gate(400, 1200)
+        return random_gate(400, 1200)
 
     def generate_meso_height(self):
         # heights = [50.0, 100.0, 500.0, 550.0, 550.0]
         # return random.choice(heights)
         # return self.gate(100, 550)
-        return self.gate(400, 550)
+        return random_gate(400, 550)
 
     def generate_lattice_length_a(self):
         return npr.normal(self.m_lattice_length_a, 0.002)
