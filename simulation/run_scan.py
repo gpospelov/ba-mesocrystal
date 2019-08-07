@@ -40,6 +40,14 @@ def scan_lattice_length_c(exp_config, sample_config, report_manager):
         sample_config["lattice_length_c"] = value
         run_single(exp_config, sample_config, report_manager)
 
+
+def scan_particle_pos_sigma(exp_config, sample_config, report_manager):
+    report_manager.m_title = "Single meso, particle_pos_sigma"
+    for value in np.linspace(0.0, 2.0, 21):
+        sample_config["particle_pos_sigma"] = value
+        run_single(exp_config, sample_config, report_manager)
+
+
 def single_shot(exp_config, sample_config, report_manager):
     report_manager.m_title = "Rotated factory"
     run_single(exp_config, sample_config, report_manager)
@@ -50,6 +58,7 @@ def run_scan(exp_config, sample_config, report_manager):
     # scan_tilt(exp_config, sample_config, report_manager)
     # scan_lattice_length_a(exp_config, sample_config, report_manager)
     # scan_lattice_length_c(exp_config, sample_config, report_manager)
+    # scan_particle_pos_sigma(exp_config, sample_config, report_manager)
     single_shot(exp_config, sample_config, report_manager)
 
 
