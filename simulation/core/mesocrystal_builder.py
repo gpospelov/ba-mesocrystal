@@ -21,8 +21,6 @@ class MesoCrystalBuilder:
         self.m_sigma_nanoparticle_radius = config["sigma_nanoparticle_radius"]
         self.m_meso_height = config["meso_height"]
         self.m_meso_radius = config["meso_radius"]
-        self.m_sigma_meso_height = config["sigma_meso_height"]
-        self.m_sigma_meso_radius = config["sigma_meso_radius"]
         self.m_sigma_lattice_length_a = config["sigma_lattice_length_a"]
         self.m_rotation_x = config["rotation_x"]
         self.m_rotation_z = config["rotation_z"]
@@ -64,8 +62,7 @@ class MesoCrystalBuilder:
         ff_meso = self.create_outer_formfactor()
 
         npc = ba.Crystal(basis, lattice)
-        dw_factor = self.m_sigma_lattice_length_a*self.m_sigma_lattice_length_a/6.0
-        npc.setDWFactor(dw_factor)
+        npc.setPositionVariance(self.m_sigma_lattice_length_a*self.m_sigma_lattice_length_a)
         result = ba.MesoCrystal(npc, ff_meso)
 
         if self.m_rotation_z != 0.0:
@@ -90,10 +87,7 @@ class FixedCylinder(MesoCrystalBuilder):
         return ba.Particle(material, ba.FormFactorFullSphere(self.m_nanoparticle_radius))
 
     def create_outer_formfactor(self):
-        ff_cyl = ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
-        ff_meso = ba.FormFactorDecoratorDebyeWaller(ff_cyl, self.m_sigma_meso_height**2/2.0,
-                                                    self.m_sigma_meso_radius**2/2.0)
-        return ff_meso
+        return ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
 
 
 class FuzzyCylinder(MesoCrystalBuilder):
@@ -110,17 +104,5 @@ class FuzzyCylinder(MesoCrystalBuilder):
         return particle
 
     def create_outer_formfactor(self):
-        ff_cyl = None
-        # if random.random() < 0.65:
-        #     ff_cyl = ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
-        # else:
-        #     ff_cyl = ba.FormFactorLorentz(self.m_meso_radius, self.m_meso_height)
-        # ff_cyl = ba.FormFactorLorentz(self.m_meso_radius, self.m_meso_height)
-        ff_cyl = ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
-        # ff_cyl = ba.FormFactorCone(self.m_meso_radius, self.m_meso_height, 80*deg)
-        # ff_cyl = ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
-        ff_meso = ba.FormFactorDecoratorDebyeWaller(ff_cyl, self.m_sigma_meso_height**2/2.0,
-                                                    self.m_sigma_meso_radius**2/2.0)
-
-        return ff_meso
+        return ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
 

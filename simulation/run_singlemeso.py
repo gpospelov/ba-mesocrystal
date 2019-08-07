@@ -23,8 +23,6 @@ class MesoCrystalBuilder:
         self.m_meso_height = 300*nm
         self.m_meso_radius = 500*nm
         self.m_sigma_lattice_length_a = 0.3*nm
-        self.m_sigma_meso_height = 20*nm
-        self.m_sigma_meso_radius = 80*nm
         self.m_rotation_x = 0.0
         self.m_rotation_z = 0.0
         self.particle_material = particle_material
@@ -53,10 +51,7 @@ class MesoCrystalBuilder:
         return basis
 
     def create_meso(self):
-        ff_cyl = ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
-
-        ff_meso = ba.FormFactorDecoratorDebyeWaller(ff_cyl, self.m_sigma_meso_height**2/2.0,
-                                                    self.m_sigma_meso_radius**2/2.0)
+        ff_meso = ba.FormFactorCylinder(self.m_meso_radius, self.m_meso_height)
 
         lattice = self.create_lattice(self.m_lattice_length_a,
                                       self.m_lattice_length_c)
@@ -67,8 +62,8 @@ class MesoCrystalBuilder:
                                   self.m_nparticles)
 
         npc = ba.Crystal(basis, lattice)
-        dw_factor = self.m_sigma_lattice_length_a*self.m_sigma_lattice_length_a/6.0
-        npc.setDWFactor(dw_factor)
+        dw_factor = self.m_sigma_lattice_length_a*self.m_sigma_lattice_length_a
+        npc.setPositionVariance(dw_factor)
         result = ba.MesoCrystal(npc, ff_meso)
 
         if self.m_rotation_z != 0.0:

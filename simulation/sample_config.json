@@ -15,8 +15,6 @@
     "sigma_nanoparticle_radius": 0.3,
     "meso_height": 800,
     "meso_radius": 2000,
-    "sigma_meso_height": 20.0,
-    "sigma_meso_radius": 20.0,
     "sigma_lattice_length_a": 0.1,
     "rotation_x": 0.0,
     "rotation_z": 0.0
@@ -43,8 +41,6 @@
     "sigma_nanoparticle_radius": 0.3,
     "meso_height": 300,
     "meso_radius": 500,
-    "sigma_meso_height": 20.0,
-    "sigma_meso_radius": 80.0,
     "sigma_lattice_length_a": 0.3,
     "rotation_x": 0.0,
     "rotation_z": 0.0
@@ -66,8 +62,6 @@
     "sigma_nanoparticle_radius": 0.3,
     "meso_height": 500,
     "meso_radius": 800,
-    "sigma_meso_height": 10.0,
-    "sigma_meso_radius": 20.0,
     "sigma_lattice_length_a": 0.60,
     "rotation_x": 0.0,
     "rotation_z": 0.0
@@ -90,8 +84,6 @@
     "sigma_nanoparticle_radius": 0.3,
     "meso_height": 800,
     "meso_radius": 2000,
-    "sigma_meso_height": 8.0,
-    "sigma_meso_radius": 8.0,
     "sigma_lattice_length_a": 0.1,
     "rotation_x": 0.0,
     "rotation_z": 0.0

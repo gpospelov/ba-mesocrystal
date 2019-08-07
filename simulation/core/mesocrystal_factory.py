@@ -153,9 +153,7 @@ class RandomMesoFactory(MesoCrystalFactory):
             cfg["rotation_x"] = tilt
             cfg["nanoparticle_radius"] = nanoparticle_radius
             cfg["meso_radius"] = meso_radius
-            cfg["sigma_meso_radius"] = meso_radius/100.
             cfg["meso_height"] = meso_height
-            cfg["sigma_meso_height"] = meso_height/100.
             cfg["lattice_length_a"] = lattice_a
             cfg["lattice_length_c"] = lattice_c
 
@@ -237,9 +235,7 @@ class MixtureMesoFactory(MesoCrystalFactory):
             cfg["rotation_x"] = tilt
             cfg["nanoparticle_radius"] = nanoparticle_radius
             cfg["meso_radius"] = meso_radius
-            # cfg["sigma_meso_radius"] = meso_radius/100.
             cfg["meso_height"] = meso_height
-            # cfg["sigma_meso_height"] = meso_height/100.
             cfg["lattice_length_a"] = lattice_a
             cfg["lattice_length_c"] = lattice_c
 
