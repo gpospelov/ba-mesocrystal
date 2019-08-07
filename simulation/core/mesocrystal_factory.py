@@ -9,7 +9,6 @@ import copy
 import numpy as np
 import numpy.random as npr
 import random
-import math
 
 
 class MesoCrystalFactory(LayoutFactory):
@@ -21,6 +20,7 @@ class MesoCrystalFactory(LayoutFactory):
         super().__init__(config)
         self.m_average_layer_thickness = config["average_layer_thickness"]
         self.m_meso_elevation = config["meso_elevation"]
+        self.m_average_meso_area = 0.0
         pass
 
     @abc.abstractmethod
@@ -29,7 +29,7 @@ class MesoCrystalFactory(LayoutFactory):
 
     @abc.abstractmethod
     def build_mesocrystals(self, particle_material):
-        return None
+        return list()
 
     def create_layout(self, particle_material):
         layout = ba.ParticleLayout()
@@ -58,7 +58,6 @@ class RotatedMesoFactory(MesoCrystalFactory):
         self.m_tilt_steps = config["RotatedMesoFactory"]["tilt_steps"]
         self.m_layout_weight = config["RotatedMesoFactory"]["layout_weight"]
         self.m_filling_ratio = config["RotatedMesoFactory"]["surface_filling_ratio"]
-        self.m_average_meso_area = 0.0
 
     def build_mesocrystals(self, material=None):
         result = []
@@ -95,16 +94,21 @@ class SingleMesoFactory(MesoCrystalFactory):
     """
     def __init__(self, config=None):
         super().__init__(config)
+        self.m_filling_ratio = config["SingleMesoFactory"]["surface_filling_ratio"]
 
     def build_mesocrystals(self, material):
         result = []
 
         meso_builder = create_mesocrystal_builder(self.m_config, material)
         mesocrystal = meso_builder.create_meso()
+        self.m_average_meso_area = meso_builder.meso_area()
 
         result.append((mesocrystal, 1.0))
 
         return result
+
+    def surface_density(self):
+        return self.m_filling_ratio/self.m_average_meso_area
 
 
 class RandomMesoFactory(MesoCrystalFactory):

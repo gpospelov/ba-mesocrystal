@@ -6,8 +6,9 @@
     "surface_filling_ratio": 0.15,
     "average_layer_thickness": 1000,
     "meso_elevation": 50,
-    "meso_factory_type": "SingleMesoFactory",
-    "diffuse_builder_type" : "None",
+    "SingleMesoFactory" : {
+      "surface_filling_ratio": 0.12
+    },
     "meso_builder_type": "FixedCylinder",
     "lattice_length_a": 12.5,
     "lattice_length_c": 31.1,
