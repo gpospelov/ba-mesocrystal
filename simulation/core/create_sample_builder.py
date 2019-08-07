@@ -1,7 +1,6 @@
 """
 Create function to build various sample builders.
 """
-from .sample_builder_ver0 import SampleBuilderVer0
 from .sample_builder_ver1 import SampleBuilderVer1
 from .sample_builder_ver2 import SampleBuilderVer2
 
