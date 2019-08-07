@@ -2,11 +2,8 @@
 Sample builder (August, 2019).
 Can work with arbitrary number of particle layouts.
 """
-import numpy
 import bornagain as ba
 from bornagain import nm, angstrom
-from .create_mesocrystal_factory import create_mesocrystal_factory
-from .create_diffuse_builder import create_diffuse_builder
 from .create_layout_factory import create_layout_factory
 from periodictable.xsf import xray_energy, xray_sld_from_atoms, xray_sld
 from periodictable.xsf import index_of_refraction, mirror_reflectivity
@@ -27,9 +24,7 @@ class SampleBuilderVer3:
         self.m_substrate_material = None
         self.m_particle_material = None
 
-        self.m_meso_factory = create_mesocrystal_factory(config)
         self.m_layouts = list()
-
         for layout_name in config["layouts"]:
             self.m_layouts.append(create_layout_factory(layout_name, config))
 
@@ -61,21 +56,6 @@ class SampleBuilderVer3:
         self.m_substrate_material = self.get_si(wavelength)
         self.m_particle_material = self.get_iron_oxide(wavelength)
 
-    def create_layout(self):
-        """
-        Creates particle layout and populates it with the collection of mesocrystals.
-        """
-        layout = ba.ParticleLayout()
-
-        # mesocrystals = self.m_meso_factory.build_mesocrystals(self.m_adapted_particle_material)
-        mesocrystals = self.m_meso_factory.build_mesocrystals(self.m_particle_material)
-        for meso, weight in mesocrystals:
-            layout.addParticle(meso, weight, ba.kvector_t(0, 0, -self.m_average_layer_thickness+self.m_meso_elevation))
-
-        layout.setTotalParticleSurfaceDensity(self.m_meso_factory.surface_density())
-
-        return layout
-
     def build_sample(self, wavelength=None):
         """
         Constructs multilayer with collection of mesocrystals.
@@ -88,20 +68,14 @@ class SampleBuilderVer3:
         avg_layer = ba.Layer(self.m_air_material,
                              self.m_average_layer_thickness)
 
-        layout = self.create_layout()
-
-        avg_layer.addLayout(layout)
-
         for layout_factory in self.m_layouts:
             avg_layer.addLayout(layout_factory.create_layout(self.m_particle_material))
 
         substrate_layer = ba.Layer(self.m_substrate_material)
 
         roughness = ba.LayerRoughness(self.m_roughness, 0.3, 500.0*nm)
-
         multi_layer.addLayer(air_layer)
         multi_layer.addLayer(avg_layer)
         multi_layer.addLayerWithTopRoughness(substrate_layer, roughness)
 
         return multi_layer
-

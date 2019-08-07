@@ -90,7 +90,7 @@
   },
   "twomeso" : {
     "sample_builder_type": "SampleBuilderVer3",
-    "layouts" : ["RandomSizeParticles"],
+    "layouts" : ["RandomSizeParticles", "RandomMesoFactory"],
     "roughness": 5.0,
     "surface_filling_ratio": 0.12,
     "average_layer_thickness": 900,
