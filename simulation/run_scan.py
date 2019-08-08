@@ -78,6 +78,14 @@ def meso_size_scan(exp_config, sample_config, report_manager):
         run_single(exp_config, sample_config, report_manager)
 
 
+def scan_roughness(exp_config, sample_config, report_manager):
+    report_manager.m_title = "RandomMeso, roughness scan"
+    values = [0.5, 1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 16.0, 20.0]
+    for value in values:
+        sample_config["roughness"] = value
+        run_single(exp_config, sample_config, report_manager)
+
+
 def single_shot(exp_config, sample_config, report_manager):
     report_manager.m_title = "Rotated factory"
     run_single(exp_config, sample_config, report_manager)
@@ -91,7 +99,8 @@ def run_scan(exp_config, sample_config, report_manager):
     # scan_particle_pos_sigma(exp_config, sample_config, report_manager)
     # scan_meso_count(exp_config, sample_config, report_manager)
     # scan_tilt_span(exp_config, sample_config, report_manager)
-    meso_size_scan(exp_config, sample_config, report_manager)
+    # meso_size_scan(exp_config, sample_config, report_manager)
+    scan_roughness(exp_config, sample_config, report_manager)
     # single_shot(exp_config, sample_config, report_manager)
 
 
