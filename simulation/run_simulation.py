@@ -106,7 +106,7 @@ def run_single(exp_config, sample_config, report=None):
 
 def main():
     exp_config = load_setup("exp_config.json", "exp1")
-    sample_config = load_setup("sample_config.json", "twomeso")
+    sample_config = load_setup("sample_config.json", "rotmeso")
 
     run_single(exp_config, sample_config)
     print("Terminated successfully")

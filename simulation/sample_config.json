@@ -23,7 +23,7 @@
   "rotmeso" : {
     "sample_builder_type": "SampleBuilderVer3",
     "layouts" : ["RandomSizeParticles", "RotatedMesoFactory"],
-    "roughness": 1.0,
+    "roughness": 4.0,
     "average_layer_thickness": 1000,
     "meso_elevation": 10,
     "RotatedMesoFactory" : {
@@ -33,7 +33,7 @@
       "tilt_start" : 0.0,
       "tilt_stop" : 0.0,
       "tilt_steps" : 1,
-      "layout_weight": 5e-2,
+      "layout_weight": 5e-1,
       "surface_filling_ratio": 0.12
     },
     "meso_builder_type": "FuzzyCylinder",
@@ -42,8 +42,8 @@
     "nparticles": 10,
     "nanoparticle_radius": 5.02,
     "sigma_nanoparticle_radius": 0.3,
-    "meso_height": 300,
-    "meso_radius": 500,
+    "meso_height": 100,
+    "meso_radius": 200,
     "particle_pos_sigma": 0.3,
     "rotation_x": 0.0,
     "rotation_z": 0.0

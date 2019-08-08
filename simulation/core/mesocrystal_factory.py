@@ -127,7 +127,7 @@ class RandomMesoFactory(MesoCrystalFactory):
         self.m_phi_values = [0.0, 17.5, 29.0, 39.0, 58.5]
 
     def generate_phi(self):
-        value = random.choice(self.m_phi_values)+random_gate(-0.5, 0.5)
+        value = random.choice(self.m_phi_values)+random_gate(-0.25, 0.25)
         return value
 
     def generate_tilt(self):

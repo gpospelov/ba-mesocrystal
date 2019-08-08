@@ -87,7 +87,7 @@ def scan_roughness(exp_config, sample_config, report_manager):
 
 
 def single_shot(exp_config, sample_config, report_manager):
-    report_manager.m_title = "Rotated factory"
+    report_manager.m_title = "TwoMeso factory"
     run_single(exp_config, sample_config, report_manager)
 
 
@@ -100,8 +100,8 @@ def run_scan(exp_config, sample_config, report_manager):
     # scan_meso_count(exp_config, sample_config, report_manager)
     # scan_tilt_span(exp_config, sample_config, report_manager)
     # meso_size_scan(exp_config, sample_config, report_manager)
-    scan_roughness(exp_config, sample_config, report_manager)
-    # single_shot(exp_config, sample_config, report_manager)
+    # scan_roughness(exp_config, sample_config, report_manager)
+    single_shot(exp_config, sample_config, report_manager)
 
 
 def main():
@@ -109,7 +109,7 @@ def main():
     report_manager = ReportManager(output)
 
     exp_config = load_setup("exp_config.json", "exp1")
-    sample_config = load_setup("sample_config.json", "randommeso")
+    sample_config = load_setup("sample_config.json", "rotmeso")
 
     run_scan(exp_config, sample_config, report_manager)
 
