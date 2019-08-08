@@ -122,6 +122,8 @@ class RandomMesoFactory(MesoCrystalFactory):
         self.m_layout_weight = config["RandomMesoFactory"]["layout_weight"]
         self.m_filling_ratio = config["RandomMesoFactory"]["surface_filling_ratio"]
         self.m_tilt_dtheta = config["RandomMesoFactory"]["tilt_dtheta"]
+        self.m_meso_radius = config["meso_radius"]
+        self.m_meso_height = config["meso_height"]
         self.m_phi_values = [0.0, 17.5, 29.0, 39.0, 58.5]
 
     def generate_phi(self):
@@ -130,6 +132,12 @@ class RandomMesoFactory(MesoCrystalFactory):
 
     def generate_tilt(self):
         return random_gate(-self.m_tilt_dtheta, self.m_tilt_dtheta)
+
+    def generate_radius(self):
+        return self.m_meso_radius
+
+    def generate_height(self):
+        return self.m_meso_height
 
     def build_mesocrystals(self, material):
         result = list()
@@ -140,10 +148,15 @@ class RandomMesoFactory(MesoCrystalFactory):
 
             phi = self.generate_phi()
             tilt = self.generate_tilt()
-            print("phi:{:f} tilt:{:f}".format(phi, tilt))
+            meso_radius = self.generate_radius()
+            meso_height = self.generate_height()
+
+            print("phi:{:f} tilt:{:f} radius:{:f} height:{:f}".format(phi, tilt, meso_radius, meso_height))
 
             cfg["rotation_z"] = phi
             cfg["rotation_x"] = tilt
+            cfg["meso_radius"] = meso_radius
+            cfg["meso_height"] = meso_height
 
             meso_builder = create_mesocrystal_builder(cfg, material)
             mesocrystal = meso_builder.create_meso()
@@ -156,3 +169,39 @@ class RandomMesoFactory(MesoCrystalFactory):
 
     def surface_density(self):
         return self.m_layout_weight*self.m_filling_ratio/self.m_average_meso_area
+
+
+class LargeRandomMesoFactory(RandomMesoFactory):
+    """
+    Generates single mesocrystal using MesoCrystalBuilder
+    """
+    def __init__(self, config=None):
+        super().__init__(config)
+        self.m_meso_count = config["LargeRandomMesoFactory"]["meso_count"]
+        self.m_layout_weight = config["LargeRandomMesoFactory"]["layout_weight"]
+        self.m_filling_ratio = config["LargeRandomMesoFactory"]["surface_filling_ratio"]
+        self.m_tilt_dtheta = config["LargeRandomMesoFactory"]["tilt_dtheta"]
+
+    def generate_radius(self):
+        return 2000.0
+
+    def generate_height(self):
+        return 800.0
+
+
+class SmallRandomMesoFactory(RandomMesoFactory):
+    """
+    Generates single mesocrystal using MesoCrystalBuilder
+    """
+    def __init__(self, config=None):
+        super().__init__(config)
+        self.m_meso_count = config["SmallRandomMesoFactory"]["meso_count"]
+        self.m_layout_weight = config["SmallRandomMesoFactory"]["layout_weight"]
+        self.m_filling_ratio = config["SmallRandomMesoFactory"]["surface_filling_ratio"]
+        self.m_tilt_dtheta = config["SmallRandomMesoFactory"]["tilt_dtheta"]
+
+    def generate_radius(self):
+        return 200.0
+
+    def generate_height(self):
+        return 100.0

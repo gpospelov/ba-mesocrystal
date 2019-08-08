@@ -51,10 +51,46 @@
   "randommeso" : {
     "sample_builder_type": "SampleBuilderVer3",
     "layouts" : ["RandomSizeParticles", "RandomMesoFactory"],
-    "roughness": 2.0,
+    "roughness": 4.0,
     "average_layer_thickness": 1100,
     "meso_elevation": 20,
     "RandomMesoFactory": {
+      "meso_count" :500,
+      "layout_weight": 2e-2,
+      "surface_filling_ratio": 0.12,
+      "tilt_dtheta": 0.2
+    },
+    "meso_builder_type": "FuzzyCylinder",
+    "lattice_length_a": 12.5,
+    "lattice_length_c": 31.1,
+    "nparticles": 10,
+    "nanoparticle_radius": 5.02,
+    "sigma_nanoparticle_radius": 0.3,
+    "meso_height": 200.0,
+    "meso_radius": 200.0,
+    "particle_pos_sigma": 0.30,
+    "rotation_x": 0.0,
+    "rotation_z": 0.0
+  },
+  "twomeso" : {
+    "sample_builder_type": "SampleBuilderVer3",
+    "layouts" : ["RandomSizeParticles", "LargeRandomMesoFactory", "SmallRandomMesoFactory"],
+    "roughness": 4.0,
+    "average_layer_thickness": 1100,
+    "meso_elevation": 20,
+    "RandomMesoFactory": {
+      "meso_count" :200,
+      "layout_weight": 2e-2,
+      "surface_filling_ratio": 0.12,
+      "tilt_dtheta": 0.2
+    },
+    "LargeRandomMesoFactory": {
+      "meso_count" :500,
+      "layout_weight": 1e-3,
+      "surface_filling_ratio": 0.12,
+      "tilt_dtheta": 0.0
+    },
+    "SmallRandomMesoFactory": {
       "meso_count" :500,
       "layout_weight": 2e-2,
       "surface_filling_ratio": 0.12,
