@@ -63,6 +63,21 @@ def scan_tilt_span(exp_config, sample_config, report_manager):
         run_single(exp_config, sample_config, report_manager)
 
 
+def meso_size_scan(exp_config, sample_config, report_manager):
+    report_manager.m_title = "RandomMeso, growing meso"
+    height0, radius0 = 50.0, 100.0
+    factor = (1, 2, 4, 6, 10, 20)
+    for value in factor:
+        height = height0*value
+        radius = radius0*value
+        volume_factor = 200.0*200.0*200.0/(radius*radius*height)
+        print("xxx", height, radius, volume_factor)
+        sample_config["meso_height"] = height
+        sample_config["meso_radius"] = radius
+        sample_config["RandomMesoFactory"]["layout_weight"] = 2e-2*2/value
+        run_single(exp_config, sample_config, report_manager)
+
+
 def single_shot(exp_config, sample_config, report_manager):
     report_manager.m_title = "Rotated factory"
     run_single(exp_config, sample_config, report_manager)
@@ -75,7 +90,8 @@ def run_scan(exp_config, sample_config, report_manager):
     # scan_lattice_length_c(exp_config, sample_config, report_manager)
     # scan_particle_pos_sigma(exp_config, sample_config, report_manager)
     # scan_meso_count(exp_config, sample_config, report_manager)
-    scan_tilt_span(exp_config, sample_config, report_manager)
+    # scan_tilt_span(exp_config, sample_config, report_manager)
+    meso_size_scan(exp_config, sample_config, report_manager)
     # single_shot(exp_config, sample_config, report_manager)
 
 
