@@ -55,7 +55,7 @@
     "average_layer_thickness": 1000,
     "meso_elevation": 20,
     "RandomMesoFactory": {
-      "meso_count" :200,
+      "meso_count" :1000,
       "layout_weight": 2e-2,
       "surface_filling_ratio": 0.12,
       "tilt_dtheta": 0.5

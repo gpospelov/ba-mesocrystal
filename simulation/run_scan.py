@@ -56,6 +56,13 @@ def scan_meso_count(exp_config, sample_config, report_manager):
         run_single(exp_config, sample_config, report_manager)
 
 
+def scan_tilt_span(exp_config, sample_config, report_manager):
+    report_manager.m_title = "RandomMeso, tilt_dtheta random span"
+    for value in np.linspace(0.0, 5.0, 11):
+        sample_config["RandomMesoFactory"]["tilt_dtheta"] = value
+        run_single(exp_config, sample_config, report_manager)
+
+
 def single_shot(exp_config, sample_config, report_manager):
     report_manager.m_title = "Rotated factory"
     run_single(exp_config, sample_config, report_manager)
@@ -67,7 +74,8 @@ def run_scan(exp_config, sample_config, report_manager):
     # scan_lattice_length_a(exp_config, sample_config, report_manager)
     # scan_lattice_length_c(exp_config, sample_config, report_manager)
     # scan_particle_pos_sigma(exp_config, sample_config, report_manager)
-    scan_meso_count(exp_config, sample_config, report_manager)
+    # scan_meso_count(exp_config, sample_config, report_manager)
+    scan_tilt_span(exp_config, sample_config, report_manager)
     # single_shot(exp_config, sample_config, report_manager)
 
 
