@@ -48,6 +48,14 @@ def scan_particle_pos_sigma(exp_config, sample_config, report_manager):
         run_single(exp_config, sample_config, report_manager)
 
 
+def scan_meso_count(exp_config, sample_config, report_manager):
+    report_manager.m_title = "Random meso, scan on meso_count. Stability of rndm()."
+    values = [100, 100, 200, 200, 500, 500, 1000, 1000]
+    for value in values:
+        sample_config["RandomMesoFactory"]["meso_count"] = value
+        run_single(exp_config, sample_config, report_manager)
+
+
 def single_shot(exp_config, sample_config, report_manager):
     report_manager.m_title = "Rotated factory"
     run_single(exp_config, sample_config, report_manager)
@@ -59,7 +67,8 @@ def run_scan(exp_config, sample_config, report_manager):
     # scan_lattice_length_a(exp_config, sample_config, report_manager)
     # scan_lattice_length_c(exp_config, sample_config, report_manager)
     # scan_particle_pos_sigma(exp_config, sample_config, report_manager)
-    single_shot(exp_config, sample_config, report_manager)
+    scan_meso_count(exp_config, sample_config, report_manager)
+    # single_shot(exp_config, sample_config, report_manager)
 
 
 def main():
@@ -67,7 +76,7 @@ def main():
     report_manager = ReportManager(output)
 
     exp_config = load_setup("exp_config.json", "exp1")
-    sample_config = load_setup("sample_config.json", "rotmeso")
+    sample_config = load_setup("sample_config.json", "randommeso")
 
     run_scan(exp_config, sample_config, report_manager)
 
