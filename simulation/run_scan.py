@@ -87,7 +87,7 @@ def scan_roughness(exp_config, sample_config, report_manager):
 
 
 def single_shot(exp_config, sample_config, report_manager):
-    report_manager.m_title = "TwoMeso factory"
+    report_manager.m_title = "Rotated meso factory"
     run_single(exp_config, sample_config, report_manager)
 
 

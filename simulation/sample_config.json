@@ -27,9 +27,9 @@
     "average_layer_thickness": 1000,
     "meso_elevation": 10,
     "RotatedMesoFactory" : {
-      "phi_start" : -5.0,
-      "phi_stop" : 63.0,
-      "phi_steps" : 200,
+      "phi_start" : 0.0,
+      "phi_stop" : 180.0,
+      "phi_steps" : 180,
       "tilt_start" : 0.0,
       "tilt_stop" : 0.0,
       "tilt_steps" : 1,
@@ -50,15 +50,15 @@
   },
   "randommeso" : {
     "sample_builder_type": "SampleBuilderVer3",
-    "layouts" : ["RandomSizeParticles", "RandomMesoFactory"],
+    "layouts" : ["RandomSizeParticles"],
     "roughness": 4.0,
-    "average_layer_thickness": 1100,
-    "meso_elevation": 20,
+    "average_layer_thickness": 1000,
+    "meso_elevation": 10,
     "RandomMesoFactory": {
       "meso_count" :500,
       "layout_weight": 2e-2,
       "surface_filling_ratio": 0.12,
-      "tilt_dtheta": 0.2
+      "tilt_dtheta": 0.0
     },
     "meso_builder_type": "FuzzyCylinder",
     "lattice_length_a": 12.5,
@@ -66,7 +66,7 @@
     "nparticles": 10,
     "nanoparticle_radius": 5.02,
     "sigma_nanoparticle_radius": 0.3,
-    "meso_height": 200.0,
+    "meso_height": 100.0,
     "meso_radius": 200.0,
     "particle_pos_sigma": 0.30,
     "rotation_x": 0.0,
